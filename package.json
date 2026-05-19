@@ -1,0 +1,15 @@
+{
+  "name": "student-verification-blockchain",
+  "version": "1.0.0",
+  "description": "Blockchain-based student verification system with Merkle Tree",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["blockchain", "ethereum", "merkle-tree", "student-verification"],
+  "author": "Jahid Mainuddin Ahmed",
+  "license": "MIT",
+  "devDependencies": {
+    "hardhat": "^2.19.0"
+  }
+}
