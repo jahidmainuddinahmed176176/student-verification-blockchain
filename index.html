@@ -1,119 +1,414 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Verification</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Student Verification | Sepolia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c1e 0%, #1a1630 50%, #0d0b1a 100%);
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) rotate(180deg);
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Glass card */
         .card {
-            background: white;
-            border-radius: 20px;
+            background: rgba(26, 22, 48, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
             padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
+
+        .card:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            box-shadow: 0 30px 60px -12px rgba(102, 126, 234, 0.2);
         }
-        .sub {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 12px;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background: #5a67d8;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
+
+        /* Header */
+        .header {
             text-align: center;
-            font-weight: bold;
-            display: none;
+            margin-bottom: 30px;
         }
-        .success {
-            background: #d4edda;
-            color: #155724;
-            display: block;
+
+        .icon {
+            font-size: 65px;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
         }
-        .fail {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
-        .loading {
-            background: #fff3cd;
-            color: #856404;
-            display: block;
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
         }
-        .status {
-            font-size: 12px;
-            padding: 8px;
-            background: #f0f0f0;
-            border-radius: 8px;
+
+        .subtitle {
+            color: #a1a1aa;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Status badge */
+        .status-badge {
+            background: rgba(39, 39, 42, 0.8);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #52525b;
+            transition: all 0.3s;
+        }
+
+        .status-dot.connected {
+            background: #10b981;
+            box-shadow: 0 0 12px #10b981;
+            animation: glow 1.5s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px #10b981;
+            }
+            50% {
+                box-shadow: 0 0 15px #10b981;
+            }
+        }
+
+        .status-text {
+            color: #d4d4d8;
+            flex: 1;
+        }
+
+        .network-badge {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        /* Input groups */
+        .input-group {
             margin-bottom: 20px;
         }
-        .green {
-            color: green;
-            font-weight: bold;
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d4d4d8;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.5px;
         }
-        .red {
-            color: red;
-            font-weight: bold;
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #3f3f46;
+            border-radius: 14px;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            background: #18181b;
+            color: #e4e4e7;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #a78bfa;
+            background: #1f1f24;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+
+        input::placeholder {
+            color: #52525b;
+        }
+
+        /* Button */
+        .verify-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verify-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .verify-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -10px rgba(102, 126, 234, 0.5);
+        }
+
+        .verify-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Result */
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            display: block;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .result.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            display: block;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .result.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            display: block;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Info cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .info-card {
+            background: rgba(39, 39, 42, 0.6);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-card .label {
+            font-size: 11px;
+            color: #a1a1aa;
+            margin-bottom: 6px;
+        }
+
+        .info-card .value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #a78bfa;
+            font-family: monospace;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #52525b;
+        }
+
+        .footer a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #18181b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #52525b;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>🎓 Student Verification</h1>
-        <div class="sub">Restaurant / University portal</div>
-        
-        <div class="status" id="status">
-            🔴 Wallet not connected
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div class="icon">🎓</div>
+                <h1>Blockchain Student ID</h1>
+                <div class="subtitle">Zero-Knowledge Verification • Gas Optimized</div>
+            </div>
+
+            <div class="status-badge" id="statusBadge">
+                <div class="status-dot" id="statusDot"></div>
+                <div class="status-text" id="statusText">Checking connection...</div>
+                <div class="network-badge" id="networkBadge">Sepolia</div>
+            </div>
+
+            <div class="input-group">
+                <label>📝 Student Hash (leaf)</label>
+                <input type="text" id="leaf" placeholder="0x21d06a90b8f247ba..." value="0x21d06a90b8f247ba079b583b3dceea6a27709f9b360b15aa7666306e5d2aad2">
+            </div>
+
+            <div class="input-group">
+                <label>🔗 Merkle Proof (leave empty for single student)</label>
+                <input type="text" id="proof" placeholder="[]" value="[]">
+            </div>
+
+            <button class="verify-btn" onclick="verifyStudent()">
+                <span>🔍</span> Verify Student Identity
+            </button>
+
+            <div id="result" class="result"></div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="label">Contract Address</div>
+                    <div class="value">0x801C...6A26</div>
+                </div>
+                <div class="info-card">
+                    <div class="label">Network</div>
+                    <div class="value">Ethereum Sepolia</div>
+                </div>
+            </div>
+
+            <div class="info" style="margin-top: 20px; text-align: center; font-size: 11px; color: #71717a;">
+                💡 This student is registered in the blockchain. No personal data is stored — only cryptographic proofs.
+            </div>
         </div>
-        
-        <label>📝 Student Hash (leaf):</label>
-        <input type="text" id="leaf" placeholder="0x21d06a90b8f247ba...">
-        
-        <label>🔗 Merkle Proof (leave empty):</label>
-        <input type="text" id="proof" placeholder="[]">
-        
-        <button onclick="verify()">✅ Verify Student</button>
-        
-        <div id="result" class="result"></div>
-        
-        <div style="margin-top: 20px; font-size: 11px; color: #999; text-align: center;">
-        Powered by Sepolia Testnet
+
+        <div class="footer">
+            Powered by Ethereum Sepolia • <a href="#" onclick="return false;">Smart Contract v1.0</a>
         </div>
     </div>
 
@@ -121,38 +416,57 @@
     <script>
         const contractAddress = "0x801C7B476D1b82D32a0D048a248BFD0159846A26";
         const abi = [{"inputs":[{"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},{"internalType":"bytes32","name":"leaf","type":"bytes32"}],"name":"isStudent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}];
-        
-        async function verify() {
+
+        // Create floating particles
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 200 + 50 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = Math.random() * 20 + 10 + 's';
+            document.getElementById('particles').appendChild(particle);
+        }
+
+        async function verifyStudent() {
             const leaf = document.getElementById("leaf").value;
             let proofInput = document.getElementById("proof").value;
             const resultDiv = document.getElementById("result");
-            
+
             if (!leaf) {
-                alert("Please paste student hash");
+                resultDiv.className = "result error";
+                resultDiv.innerHTML = "❌ Please enter a student hash";
                 return;
             }
-            
-            resultDiv.className = "result loading";
-            resultDiv.innerHTML = "⏳ Verifying...";
-            
+
+            resultDiv.className = "result pending";
+            resultDiv.innerHTML = "⏳ Verifying on blockchain...";
+
             if (!window.ethereum) {
-                resultDiv.className = "result fail";
-                resultDiv.innerHTML = "❌ Please install MetaMask";
+                resultDiv.className = "result error";
+                resultDiv.innerHTML = "❌ MetaMask not installed. Please install MetaMask extension.";
                 return;
             }
-            
+
             try {
                 const web3 = new Web3(window.ethereum);
                 await window.ethereum.request({ method: "eth_requestAccounts" });
-                document.getElementById("status").innerHTML = "🟢 Wallet connected";
+                
+                const accounts = await web3.eth.getAccounts();
+                const network = await web3.eth.net.getNetworkType();
+                
+                document.getElementById("statusDot").className = "status-dot connected";
+                document.getElementById("statusText").innerHTML = "Connected: " + accounts[0].slice(0, 10) + "...";
                 
                 let proof = [];
                 if (proofInput && proofInput !== "[]" && proofInput !== "") {
                     try {
                         proof = JSON.parse(proofInput);
                     } catch(e) {
-                        resultDiv.className = "result fail";
-                        resultDiv.innerHTML = "❌ Invalid proof format";
+                        resultDiv.className = "result error";
+                        resultDiv.innerHTML = "❌ Invalid proof format. Use [] for empty.";
                         return;
                     }
                 }
@@ -162,23 +476,32 @@
                 
                 if (result) {
                     resultDiv.className = "result success";
-                    resultDiv.innerHTML = "✅ VERIFIED! This person is a valid student.";
+                    resultDiv.innerHTML = "✅ VERIFIED! This student is registered in the blockchain system.";
                 } else {
-                    resultDiv.className = "result fail";
-                    resultDiv.innerHTML = "❌ NOT VERIFIED! Invalid student.";
+                    resultDiv.className = "result error";
+                    resultDiv.innerHTML = "❌ NOT VERIFIED! No matching student record found.";
                 }
-            } catch(err) {
-                resultDiv.className = "result fail";
-                resultDiv.innerHTML = "❌ Error: " + err.message;
+            } catch(error) {
+                console.error(error);
+                resultDiv.className = "result error";
+                resultDiv.innerHTML = "❌ Error: " + error.message;
             }
         }
-        
+
+        // Check initial connection
         async function checkConnection() {
             if (window.ethereum) {
                 const accounts = await window.ethereum.request({ method: "eth_accounts" });
                 if (accounts.length > 0) {
-                    document.getElementById("status").innerHTML = "🟢 Wallet connected";
+                    document.getElementById("statusDot").className = "status-dot connected";
+                    document.getElementById("statusText").innerHTML = "Connected: " + accounts[0].slice(0, 10) + "...";
+                } else {
+                    document.getElementById("statusDot").className = "status-dot";
+                    document.getElementById("statusText").innerHTML = "Not connected. Click verify to connect.";
                 }
+            } else {
+                document.getElementById("statusDot").className = "status-dot";
+                document.getElementById("statusText").innerHTML = "MetaMask not detected";
             }
         }
         checkConnection();
