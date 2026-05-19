@@ -15,7 +15,28 @@
 
 </div>
 
+
 ---
+
+## 🚀 Live Demo
+
+👉 **[Click Here to Test the System](https://jahidmainuddinahmed176176.github.io/student-verification-blockchain)**
+
+### Test Credentials (Valid Student)
+
+```json
+{
+  "name": "Irfan Ali",
+  "studentId": "20240123", 
+  "secretNonce": "mango789",
+  "hash": "0x21d06a90b8f247ba079b583b3dceea6a27709f9b360b15aa7666306e5d2aad2"
+}
+```
+
+---
+
+
+
 
 ## 📌 Overview
 
@@ -105,24 +126,6 @@ function isStudent(bytes32[] memory proof, bytes32 leaf)
 function claimOffer(bytes32[] memory proof, bytes32 leaf) external
 ```
 
----
-
-## 🚀 Live Demo
-
-👉 **[Click Here to Test the System](https://jahidmainuddinahmed176176.github.io/student-verification-blockchain)**
-
-### Test Credentials (Valid Student)
-
-```json
-{
-  "name": "Irfan Ali",
-  "studentId": "20240123", 
-  "secretNonce": "mango789",
-  "hash": "0x21d06a90b8f247ba079b583b3dceea6a27709f9b360b15aa7666306e5d2aad2"
-}
-```
-
----
 
 ## 📋 How to Test (For Restaurant Owners)
 
