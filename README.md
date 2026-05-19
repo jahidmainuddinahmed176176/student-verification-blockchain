@@ -178,17 +178,4 @@ MIT © [Jahid Mainuddin Ahmed](https://github.com/jahidmainuddinahmed176176)
 
 <div align="center">
 
-### ⭐ Star this repo if you found it useful!
 
-**Built as part of a Blockchain Thesis Project**  
-*Gas-optimized • Privacy-first • Production-ready*
-
-</div>
-```
-
----
-
-
-**"Beautiful"** when you see it on GitHub
-
-Your project now looks **100% professional** and ready for job applications! 🚀
