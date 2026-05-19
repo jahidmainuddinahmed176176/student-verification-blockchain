@@ -394,7 +394,7 @@
             <div class="info-grid">
                 <div class="info-card">
                     <div class="label">Contract Address</div>
-                    <div class="value">0x801C...6A26</div>
+                    <div class="value">0x801c...6a26</div>
                 </div>
                 <div class="info-card">
                     <div class="label">Network</div>
@@ -414,7 +414,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
     <script>
-        const contractAddress = "0x801C7B476D1b82D32a0D048a248BFD0159846A26";
+        // FIXED: Lowercase contract address (no checksum error)
+        const contractAddress = "0x801c7b476d1b82d32a0d048a248bfd0159846a26";
+        
         const abi = [{"inputs":[{"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},{"internalType":"bytes32","name":"leaf","type":"bytes32"}],"name":"isStudent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}];
 
         // Create floating particles
@@ -455,7 +457,6 @@
                 await window.ethereum.request({ method: "eth_requestAccounts" });
                 
                 const accounts = await web3.eth.getAccounts();
-                const network = await web3.eth.net.getNetworkType();
                 
                 document.getElementById("statusDot").className = "status-dot connected";
                 document.getElementById("statusText").innerHTML = "Connected: " + accounts[0].slice(0, 10) + "...";
