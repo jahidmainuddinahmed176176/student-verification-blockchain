@@ -149,8 +149,4 @@ function claimOffer(bytes32[] memory proof, bytes32 leaf) external
 
 ```
 
----
-
-<div align="center">
-
 
