@@ -172,7 +172,7 @@ student-verification-blockchain/
 
 ## 📝 License
 
-MIT © [Jahid Mainuddin Ahmed](https://github.com/jahidmainuddinahmed176176)
+MIT © [Mainuddin Ahmed Jahid](https://github.com/jahidmainuddinahmed176176)
 
 ---
 
