@@ -151,16 +151,6 @@ function claimOffer(bytes32[] memory proof, bytes32 leaf) external
 
 ---
 
-## 🎯 Future Improvements
-
-- [ ] Batch Merkle Tree for 1000+ students
-- [ ] ZK-SNARKs for complete privacy
-- [ ] QR code scanning for restaurants
-- [ ] Mobile app version
-- [ ] Deploy to Ethereum Mainnet
-
----
-
 <div align="center">
 
 
