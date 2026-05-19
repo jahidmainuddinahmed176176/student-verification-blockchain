@@ -147,15 +147,6 @@ function claimOffer(bytes32[] memory proof, bytes32 leaf) external
 | **Network** | Ethereum Sepolia (Chain ID: 11155111) |
 | **Explorer** | [View on Etherscan](https://sepolia.etherscan.io/address/0x801C7B476D1b82D32a0D048a248BFD0159846A26) |
 
----
-
-## 📁 Project Structure
-
-```
-student-verification-blockchain/
-├── index.html          # Frontend application
-├── StudentVerify.sol   # Smart contract source
-└── README.md          # Documentation
 ```
 
 ---
@@ -167,12 +158,6 @@ student-verification-blockchain/
 - [ ] QR code scanning for restaurants
 - [ ] Mobile app version
 - [ ] Deploy to Ethereum Mainnet
-
----
-
-## 📝 License
-
-MIT © [Mainuddin Ahmed Jahid](https://github.com/jahidmainuddinahmed176176)
 
 ---
 
