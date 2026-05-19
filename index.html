@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .sub {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #5a67d8;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        .fail {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+            display: block;
+        }
+        .status {
+            font-size: 12px;
+            padding: 8px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .green {
+            color: green;
+            font-weight: bold;
+        }
+        .red {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎓 Student Verification</h1>
+        <div class="sub">Restaurant / University portal</div>
+        
+        <div class="status" id="status">
+            🔴 Wallet not connected
+        </div>
+        
+        <label>📝 Student Hash (leaf):</label>
+        <input type="text" id="leaf" placeholder="0x21d06a90b8f247ba...">
+        
+        <label>🔗 Merkle Proof (leave empty):</label>
+        <input type="text" id="proof" placeholder="[]">
+        
+        <button onclick="verify()">✅ Verify Student</button>
+        
+        <div id="result" class="result"></div>
+        
+        <div style="margin-top: 20px; font-size: 11px; color: #999; text-align: center;">
+        Powered by Sepolia Testnet
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script>
+        const contractAddress = "0x801C7B476D1b82D32a0D048a248BFD0159846A26";
+        const abi = [{"inputs":[{"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},{"internalType":"bytes32","name":"leaf","type":"bytes32"}],"name":"isStudent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}];
+        
+        async function verify() {
+            const leaf = document.getElementById("leaf").value;
+            let proofInput = document.getElementById("proof").value;
+            const resultDiv = document.getElementById("result");
+            
+            if (!leaf) {
+                alert("Please paste student hash");
+                return;
+            }
+            
+            resultDiv.className = "result loading";
+            resultDiv.innerHTML = "⏳ Verifying...";
+            
+            if (!window.ethereum) {
+                resultDiv.className = "result fail";
+                resultDiv.innerHTML = "❌ Please install MetaMask";
+                return;
+            }
+            
+            try {
+                const web3 = new Web3(window.ethereum);
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+                document.getElementById("status").innerHTML = "🟢 Wallet connected";
+                
+                let proof = [];
+                if (proofInput && proofInput !== "[]" && proofInput !== "") {
+                    try {
+                        proof = JSON.parse(proofInput);
+                    } catch(e) {
+                        resultDiv.className = "result fail";
+                        resultDiv.innerHTML = "❌ Invalid proof format";
+                        return;
+                    }
+                }
+                
+                const contract = new web3.eth.Contract(abi, contractAddress);
+                const result = await contract.methods.isStudent(proof, leaf).call();
+                
+                if (result) {
+                    resultDiv.className = "result success";
+                    resultDiv.innerHTML = "✅ VERIFIED! This person is a valid student.";
+                } else {
+                    resultDiv.className = "result fail";
+                    resultDiv.innerHTML = "❌ NOT VERIFIED! Invalid student.";
+                }
+            } catch(err) {
+                resultDiv.className = "result fail";
+                resultDiv.innerHTML = "❌ Error: " + err.message;
+            }
+        }
+        
+        async function checkConnection() {
+            if (window.ethereum) {
+                const accounts = await window.ethereum.request({ method: "eth_accounts" });
+                if (accounts.length > 0) {
+                    document.getElementById("status").innerHTML = "🟢 Wallet connected";
+                }
+            }
+        }
+        checkConnection();
+    </script>
+</body>
+</html>
